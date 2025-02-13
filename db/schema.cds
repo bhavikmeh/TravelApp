@@ -34,8 +34,9 @@ entity Travel : cuid, managed {
     lastchangedby : managed:modifiedBy @UI.Hidden: true;
 }
 
+@cds.autoexpose: true
 entity Booking : cuid, managed {
-    bookingid         : Integer            @Core.Computed; //or @readonly
+    bookingid         : Integer             @readonly; //@Core.Computed; //or
     bookingdate       : Date;
     connectionid      : String(4);
     flightdate        : Date;
@@ -55,12 +56,12 @@ entity Booking : cuid, managed {
                             on to_booksupplement.to_booking = $self;
     to_carrier        : String(3);
     to_customer       : String(6);
-    to_travel         : Association to Travel;
+    to_travel         : Association to Travel; 
     to_flight         : String(3);
     lastchangedat     : managed:modifiedAt @UI.Hidden: true;
     lastchangedby     : managed:modifiedBy @UI.Hidden: true;
 }
-
+@cds.autoexpose: true
 entity BookingSupplement : cuid, managed {
     bookingsupplementid : Integer            @Core.Computed;
 
