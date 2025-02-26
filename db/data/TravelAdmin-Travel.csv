@@ -1,4 +1,4 @@
-createdAt,createdBy,lastchangedat,lastchangedby,ID,travelid,begindate,enddate,bookingfee,totalprice,currency_code,progress,description,travelstatus,to_agency,to_customer
+createdAt,createdBy,modifiedAt,modifiedBy,ID,travelid,begindate,enddate,bookingfee,totalprice,CurrencyCode_code,progress,description,travelstatus_code,to_agency_AgencyID,to_customer_CustomerID
 2021-10-20T19:54:13.000Z,Meier,2022-09-01T13:50:29.755Z,privileged,52657221A8E4645C17002DF03754AB66,1,2025-11-06,2025-11-06,20,900,USD,65,"Business Trip for Christine, Pierre",O,070007,000608
 2021-10-02T22:05:32.000Z,Detemple,2022-09-01T13:50:29.755Z,privileged,53657221A8E4645C17002DF03754AB66,2,2025-11-06,2026-09-04,80,4164,USD,65,Vacation,O,070046,000093
 2021-10-16T04:32:59.000Z,Rahn,2022-09-01T13:50:29.755Z,privileged,54657221A8E4645C17002DF03754AB66,3,2025-11-06,2026-09-04,40,1871,USD,65,Vacation,O,070042,000665

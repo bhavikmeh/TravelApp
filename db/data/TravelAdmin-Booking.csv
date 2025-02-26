@@ -1,4 +1,4 @@
-createdAt,createdBy,lastchangedat,lastchangedby,ID,bookingid,bookingdate,connectionid,flightdate,flightprice,currency_code,totalsuppprice,bookingstatus,to_carrier,to_customer,to_travel_ID
+createdAt,createdBy,modifiedAt,modifiedBy,ID,bookingid,bookingdate,connectionid,flightdate,flightprice,currency_code,totalsuppprice,bookingstatus_code,to_carrier_AirlineID,to_customer_CustomerID,to_travel_ID
 2022-09-28T13:28:00.791Z,anonymous,2022-09-28T13:31:16.338Z,privileged,7A757221A8E4645C17002DF03754AB66,1,2021-11-04,1537,2021-11-06,438,USD,0,N,SW,000099,52657221A8E4645C17002DF03754AB66
 2022-09-28T13:28:00.791Z,anonymous,2022-09-28T13:31:16.338Z,privileged,7B757221A8E4645C17002DF03754AB66,2,2021-11-04,1537,2021-11-06,438,USD,4,N,SW,000660,52657221A8E4645C17002DF03754AB66
 2022-09-28T13:28:00.791Z,anonymous,2022-09-28T13:31:16.338Z,privileged,7C757221A8E4645C17002DF03754AB66,1,2021-10-16,1537,2021-11-06,438,USD,47.5,N,SW,000093,53657221A8E4645C17002DF03754AB66

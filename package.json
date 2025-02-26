@@ -29,6 +29,10 @@
     }
   },
   "scripts": {
-    "start": "cds-serve"
-  }
+    "start": "cds-serve",    
+    "watch-travelappprcs": "cds watch --open travelappprcs/webapp/index.html?sap-ui-xx-viewCache=false"
+  },
+  "sapux": [    
+    "app/travelappprcs"
+  ]
 }
