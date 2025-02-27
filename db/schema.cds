@@ -66,24 +66,34 @@ entity Travel : cuid, managed {
 
 }
 
-
+@cds.search: {
+    bookingid             
+}
 entity Booking : cuid, managed {
+    @title : 'Booking Id'
     bookingid         : Integer @Core.Computed;
+    @title : 'Booking Date'
     bookingdate       : Date;
+    @title : 'Flight Number'
     connectionid      : String(4);
+    @title : 'Flight Date'
     flightdate        : Date;
 
     @Measures.ISOCurrency: currency_code
+    @title : 'Flight Price'
     flightprice       : Decimal(16, 2);
     currency          : Currency;
+    @title : 'Booking Status'
     bookingstatus     : Association to BookingStatus;
     @Measures.ISOCurrency: currency_code
     totalsuppprice    : Decimal(16, 2);
     to_booksupplement : Composition of many BookingSupplement
                             on to_booksupplement.to_booking = $self;
+    @title : 'Airline'                        
     to_carrier        : Association to one Airline;
+    @title : 'Customer'
     to_customer       : Association to one Passenger;
-    to_travel         : Association to Travel;
+    to_travel         : Association to Travel;    
     to_flight         : Association to one Flight
                                 on  to_flight.AirlineID    = to_carrier.AirlineID
                                 and to_flight.FlightDate   = flightdate

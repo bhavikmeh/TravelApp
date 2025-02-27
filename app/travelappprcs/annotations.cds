@@ -1,4 +1,6 @@
 using TravelProcess as service from '../../srv/schema';
+using from '../../db/schema';
+
 annotate service.Travel with @(
     UI.FieldGroup #GeneratedGroup : {
         $Type : 'UI.FieldGroupType',
@@ -50,6 +52,12 @@ annotate service.Travel with @(
             ID : 'GeneratedFacet1',
             Label : 'General Information',
             Target : '@UI.FieldGroup#GeneratedGroup',
+        },
+        {
+            $Type : 'UI.ReferenceFacet',
+            Label : '{i18n>Bookings}',
+            ID : 'i18nBookings',
+            Target : 'to_booking/@UI.SelectionPresentationVariant#i18nBookings',
         },
     ],
     UI.LineItem : [
@@ -147,6 +155,31 @@ annotate service.Travel with @(
         Value : travelstatus_code,
         Title : '{i18n>TravelStatus}',
     },
+    UI.SelectionPresentationVariant #table : {
+        $Type : 'UI.SelectionPresentationVariantType',
+        PresentationVariant : {
+            $Type : 'UI.PresentationVariantType',
+            Visualizations : [
+                '@UI.LineItem',
+            ],
+            SortOrder : [
+                {
+                    $Type : 'Common.SortOrderType',
+                    Property : travelid,
+                    Descending : false,
+                },
+            ],
+        },
+        SelectionVariant : {
+            $Type : 'UI.SelectionVariantType',
+            SelectOptions : [
+            ],
+        },
+    },
+    UI.HeaderInfo : {
+        TypeName : 'Travel',
+        TypeNamePlural : 'Travels',
+    },
 );
 
 annotate service.Travel with {
@@ -242,7 +275,10 @@ annotate service.Travel with {
 };
 
 annotate service.Passenger with {
-    CustomerID @Common.Text : CustomerName
+    CustomerID @Common.Text : {
+        $value : CustomerName,
+        ![@UI.TextArrangement] : #TextFirst
+    }
 };
 
 annotate service.Travel with {
@@ -254,5 +290,300 @@ annotate service.Travel with {
 
 annotate service.Travel with {
     enddate @Common.FieldControl : #Mandatory
+};
+
+annotate service.Booking with @(
+    UI.LineItem #i18nBookings : [
+        {
+            $Type : 'UI.DataField',
+            Value : bookingid,
+        },
+        {
+            $Type : 'UI.DataField',
+            Value : bookingdate,
+        },
+        {
+            $Type : 'UI.DataField',
+            Value : to_customer_CustomerID,
+        },
+        {
+            $Type : 'UI.DataField',
+            Value : to_carrier_AirlineID,
+        },
+        {
+            $Type : 'UI.DataField',
+            Value : connectionid,
+        },
+        {
+            $Type : 'UI.DataField',
+            Value : flightdate,
+        },
+    ],
+    UI.SelectionPresentationVariant #i18nBookings : {
+        $Type : 'UI.SelectionPresentationVariantType',
+        PresentationVariant : {
+            $Type : 'UI.PresentationVariantType',
+            Visualizations : [
+                '@UI.LineItem#i18nBookings',
+            ],
+            SortOrder : [
+                {
+                    $Type : 'Common.SortOrderType',
+                    Property : bookingdate,
+                    Descending : false,
+                },
+            ],
+        },
+        SelectionVariant : {
+            $Type : 'UI.SelectionVariantType',
+            SelectOptions : [
+            ],
+        },
+    },
+    UI.HeaderFacets : [
+        
+    ],
+    UI.FieldGroup #i18nBooking : {
+        $Type : 'UI.FieldGroupType',
+        Data : [
+        ],
+    },
+    UI.Facets : [
+        {
+            $Type : 'UI.CollectionFacet',
+            Label : '{i18n>GeneralInformation}',
+            ID : 'Booking',
+            Facets : [
+                {
+                    $Type : 'UI.ReferenceFacet',
+                    Label : 'Booking',
+                    ID : 'Booking1',
+                    Target : '@UI.FieldGroup#Booking',
+                },
+                {
+                    $Type : 'UI.ReferenceFacet',
+                    Label : 'Flight',
+                    ID : 'Flight',
+                    Target : '@UI.FieldGroup#Flight',
+                },
+            ],
+        },
+    ],
+    UI.FieldGroup #Booking : {
+        $Type : 'UI.FieldGroupType',
+        Data : [
+            {
+                $Type : 'UI.DataField',
+                Value : bookingid,
+            },
+            {
+                $Type : 'UI.DataField',
+                Value : bookingdate,
+            },
+            {
+                $Type : 'UI.DataField',
+                Value : to_customer_CustomerID,
+            },
+            {
+                $Type : 'UI.DataField',
+                Value : bookingstatus_code,
+            },
+        ],
+    },
+    UI.FieldGroup #Flight : {
+        $Type : 'UI.FieldGroupType',
+        Data : [
+            {
+                $Type : 'UI.DataField',
+                Value : to_carrier_AirlineID,
+            },
+            {
+                $Type : 'UI.DataField',
+                Value : connectionid,
+            },
+            {
+                $Type : 'UI.DataField',
+                Value : flightdate,
+            },
+            {
+                $Type : 'UI.DataField',
+                Value : flightprice,
+            },
+        ],
+    },
+    UI.HeaderInfo : {
+        TypeName : 'Booking',
+        TypeNamePlural : 'Bookings',
+        Title : {
+            $Type : 'UI.DataField',
+            Value : to_customer_CustomerID,
+        },
+    },
+);
+
+annotate service.Booking with {
+    to_carrier @(
+        Common.Text : {
+            $value : to_carrier.Name,
+            ![@UI.TextArrangement] : #TextFirst
+        },
+        Common.ValueList : {
+            $Type : 'Common.ValueListType',
+            CollectionPath : 'Airline',
+            Parameters : [
+                {
+                    $Type : 'Common.ValueListParameterInOut',
+                    LocalDataProperty : to_carrier_AirlineID,
+                    ValueListProperty : 'AirlineID',
+                },
+                {
+                    $Type : 'Common.ValueListParameterDisplayOnly',
+                    ValueListProperty : 'Name',
+                },
+                {
+                    $Type : 'Common.ValueListParameterDisplayOnly',
+                    ValueListProperty : 'CurrencyCode_code',
+                },
+            ],
+            Label : 'Select Airline',
+        },
+        Common.ValueListWithFixedValues : false,
+    )
+};
+
+annotate service.Booking with {
+    to_customer @(
+        Common.Text : {
+            $value : to_customer.CustomerName,
+            ![@UI.TextArrangement] : #TextFirst
+        },
+        Common.ValueList : {
+            $Type : 'Common.ValueListType',
+            CollectionPath : 'Passenger',
+            Parameters : [
+                {
+                    $Type : 'Common.ValueListParameterInOut',
+                    LocalDataProperty : to_customer_CustomerID,
+                    ValueListProperty : 'CustomerID',
+                },
+                {
+                    $Type : 'Common.ValueListParameterDisplayOnly',
+                    ValueListProperty : 'FirstName',
+                },
+                {
+                    $Type : 'Common.ValueListParameterDisplayOnly',
+                    ValueListProperty : 'LastName',
+                },
+                {
+                    $Type : 'Common.ValueListParameterDisplayOnly',
+                    ValueListProperty : 'City',
+                },
+                {
+                    $Type : 'Common.ValueListParameterDisplayOnly',
+                    ValueListProperty : 'Street',
+                },
+                {
+                    $Type : 'Common.ValueListParameterDisplayOnly',
+                    ValueListProperty : 'PostalCode',
+                },
+                {
+                    $Type : 'Common.ValueListParameterDisplayOnly',
+                    ValueListProperty : 'CountryCode_code',
+                },
+            ],
+            Label : 'Select Customer',
+        },
+        Common.ValueListWithFixedValues : false,
+    )
+};
+
+annotate service.BookingStatus with {
+    code @Common.Text : {
+        $value : name,
+        ![@UI.TextArrangement] : #TextFirst
+    }
+};
+
+annotate service.Airline with {
+    AirlineID @Common.Text : {
+        $value : Name,
+        ![@UI.TextArrangement] : #TextFirst,
+    }
+};
+
+annotate service.Booking with {
+    connectionid @(Common.ValueList : {
+            $Type : 'Common.ValueListType',
+            CollectionPath : 'FLight',
+            Parameters : [
+                {
+                    $Type : 'Common.ValueListParameterInOut',
+                    LocalDataProperty : connectionid,
+                    ValueListProperty : 'ConnectionID',
+                },
+                {
+                    $Type : 'Common.ValueListParameterInOut',
+                    ValueListProperty : 'AirlineID',
+                    LocalDataProperty : to_carrier_AirlineID,
+                },
+                {
+                    $Type : 'Common.ValueListParameterInOut',
+                    ValueListProperty : 'FlightDate',
+                    LocalDataProperty : flightdate,
+                },
+                {
+                    $Type : 'Common.ValueListParameterInOut',
+                    ValueListProperty : 'Price',
+                    LocalDataProperty : flightprice,
+                },
+                {
+                    $Type : 'Common.ValueListParameterInOut',
+                    ValueListProperty : 'CurrencyCode_code',
+                    LocalDataProperty : currency_code,
+                },
+            ],
+            Label : 'Select Flight Number',
+        },
+        Common.ValueListWithFixedValues : false
+)};
+
+annotate service.Booking with {
+    flightdate @(Common.ValueList : {
+            $Type : 'Common.ValueListType',
+            CollectionPath : 'FLight',
+            Parameters : [
+                {
+                    $Type : 'Common.ValueListParameterInOut',
+                    LocalDataProperty : flightdate,
+                    ValueListProperty : 'FlightDate',
+                },
+                {
+                    $Type : 'Common.ValueListParameterInOut',
+                    ValueListProperty : 'AirlineID',
+                    LocalDataProperty : to_carrier_AirlineID,
+                },
+                {
+                    $Type : 'Common.ValueListParameterInOut',
+                    ValueListProperty : 'ConnectionID',
+                    LocalDataProperty : connectionid,
+                },
+                {
+                    $Type : 'Common.ValueListParameterInOut',
+                    ValueListProperty : 'Price',
+                    LocalDataProperty : flightprice,
+                },
+                {
+                    $Type : 'Common.ValueListParameterInOut',
+                    ValueListProperty : 'CurrencyCode_code',
+                    LocalDataProperty : currency_code,
+                },
+            ],
+            Label : 'Select Flight Date',
+        },
+        Common.ValueListWithFixedValues : false
+)};
+
+annotate service.Booking with {
+    bookingstatus @Common.ValueListWithFixedValues : true
 };
 

@@ -131,10 +131,26 @@
               "controlConfiguration": {
                 "@com.sap.vocabularies.UI.v1.LineItem": {
                   "tableSettings": {
-                    "type": "ResponsiveTable"
+                    "type": "ResponsiveTable",
+                    "condensedTableLayout": true,
+                    "disableCopyToClipboard": true,
+                    "selectionMode": "Multi",
+                    "personalization": {
+                      "column": true,
+                      "sort": true
+                    },
+                    "quickVariantSelection": {
+                      "showCounts": true,
+                      "paths": [
+                        {
+                          "annotationPath": "com.sap.vocabularies.UI.v1.SelectionPresentationVariant#table"
+                        }
+                      ]
+                    }
                   }
                 }
-              }
+              },
+              "defaultTemplateAnnotationPath": "com.sap.vocabularies.UI.v1.SelectionPresentationVariant#table"
             }
           }
         },
@@ -150,6 +166,16 @@
                 "to_booking": {
                   "detail": {
                     "route": "BookingObjectPage"
+                  }
+                }
+              },
+              "controlConfiguration": {
+                "to_booking/@com.sap.vocabularies.UI.v1.LineItem#i18nBookings": {
+                  "tableSettings": {
+                    "creationMode": {
+                      "name": "Inline",
+                      "createAtEnd": true
+                    }
                   }
                 }
               }

@@ -4,13 +4,18 @@ using {sap.fe.cap.travel as master} from '../db/master-data';
 
 @path: '/Admin'
 service TravelProcess {
-    entity Agency    as projection on master.TravelAgency;
+    entity Agency           as projection on master.TravelAgency;
+    entity Airline          as projection on master.Airline;
+    entity Airport          as projection on master.Airport;
+    entity FLight           as projection on master.Flight;
+    entity FlightConnection as projection on master.FlightConnection;
+    entity BookingStatus as projection on my.BookingStatus;
 
     @cds.autoexpose: true
-    entity Passenger as projection on master.Passenger;
+    entity Passenger        as projection on master.Passenger;
 
     @odata.draft.enabled
-    entity Travel    as
+    entity Travel           as
         projection on my.Travel {
             *,
             // @Common.Text: description  @Common.TextArrangement: #TextOnly
@@ -43,7 +48,7 @@ service TravelProcess {
             action acceptTravel();
             action rejectTravel();
         };
-// entity Booking as projection on my.Travel;
+// entity Booking as projection on my.Booking;
 
 }
 
@@ -59,9 +64,22 @@ annotate TravelProcess.Travel with {
 
 };
 
+annotate TravelProcess.Booking with{
+    bookingstatus @Common.Text: bookingstatus.name @Common.TextArrangement : #TextFirst
+} ;
+
+
 // Setting up Refresh whenever booking fee is changed so that Total price is updated
 annotate TravelProcess.Travel with @(Common.SideEffects: {
     SourceProperties: [bookingfee],
+    TargetProperties: ['totalprice']   
+
+});
+// Adding more than one Side Effect Annotations FOR SAME ENETITY usin # it is some name
+// Also adding annotaiton between Child and PArent
+// So here whenever I change Price in Booking it will reflect in Travel
+annotate TravelProcess.Travel @(Common.SideEffects #ReactonItemCreationOrDeletion: {
+    SourceEntities  : [to_booking],
     TargetProperties: ['totalprice']
 });
 
@@ -104,3 +122,4 @@ annotate TravelProcess.Travel with actions {
         ],
     );
 }
+
